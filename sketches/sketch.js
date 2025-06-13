@@ -78,20 +78,23 @@ function draw() {
     // }
     let lips = face.lips;
     fill(200, 50, 30);
-    stroke(0);
+    noStroke();
     beginShape();
     for (let n = 0; n < seqOuter.length; n++) {
       let kpIdx = seqOuter[n];
       let keypoint = lips.keypoints[kpIdx];
       vertex(keypoint.x, keypoint.y);
     }
-    endShape(CLOSE);
-    beginShape();
-    for (let num = 0; num < seqInner.length; num++) {
+    // endShape(CLOSE);
+    // 반시계
+    beginContour();
+    for (let num = seqInner.length - 1; num >= 0; num--) {
       let kpIdx = seqInner[num];
       let keypoint = lips.keypoints[kpIdx];
       vertex(keypoint.x, keypoint.y);
     }
+    endContour();
+
     endShape(CLOSE);
     // fill(0);
     // for (let kpIdx = 0; kpIdx < lips.keypoints.length; kpIdx++) {
