@@ -1,6 +1,7 @@
 const { Responsive } = P5Template;
 
 let faceMesh;
+// facemMesh를 쓰기위한 옵션 오브제
 const option = {
   maxFaces: 1,
   refineLandmarks: false,
@@ -8,7 +9,10 @@ const option = {
 };
 let faces = [];
 let video;
+let lipStemp;
+let stemps = [];
 
+// class stemps =
 let seqOuter = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,
 ];
@@ -25,11 +29,17 @@ function preload() {
 }
 
 function setup() {
+  // 캔버스 바꿔줘야함
   new Responsive().createResponsiveCanvas(1440, 1080, 'contain', true);
+
+  lipStemp = createGraphics(width, height);
+  lipStemp.clear();
+  // "contain" | "fill" | "cover" | "none" | "scale-down"
 
   // 비디오
   video = createCapture(VIDEO, { flipped: true });
-  video.size(640, 480);
+  video.size(width, height);
+  // size: 640, 480
   video.hide();
   // Start detecting faces from the webcam video
   faceMesh.detectStart(video, gotFaces);
@@ -40,39 +50,52 @@ function setup() {
 
 function draw() {
   background('#0000cd');
+  image(video, 0, 0, width, height);
 
-  // 그리드 색
-  Responsive.drawReferenceGrid('#ffffff');
+  textStyle(BOLDITALIC);
+  textSize(70);
+  textAlign(CENTER);
+  fill('white');
+  text('Lips', width / 2, height / 7);
+
+  lipStemp.fill('#b22222a9');
+  lipStemp.noStroke();
+  // lipStemp.rect(0, 0, width, height);
+
+  // 그리드
+  // Responsive.drawReferenceGrid('#ffffff');
 
   // 디버깅용
-  noStroke();
-  fill('red');
-  circle(mouseX, mouseY, 100);
+  // noStroke();
+  // fill('red');
+  // circle(mouseX, mouseY, 100);
 
   for (let i = 0; i < faces.length; i++) {
     let face = faces[i];
     let lips = face.lips;
-    fill(200, 50, 30);
-    noStroke();
-    beginShape();
+    lipStemp.fill('#b22222a9');
+    lipStemp.strokeWeight(1);
+    lipStemp.noStroke();
+    lipStemp.beginShape();
     for (let n = 0; n < seqOuter.length; n++) {
       let kpIdx = seqOuter[n];
       let keypoint = lips.keypoints[kpIdx];
-      vertex(keypoint.x, keypoint.y);
+      lipStemp.vertex(keypoint.x, keypoint.y);
     }
 
     // endShape(CLOSE);
     // 반시계
-    beginContour();
+    lipStemp.beginContour();
     for (let num = seqInner.length - 1; num >= 0; num--) {
       let kpIdx = seqInner[num];
       let keypoint = lips.keypoints[kpIdx];
-      vertex(keypoint.x, keypoint.y);
+      lipStemp.vertex(keypoint.x, keypoint.y);
     }
-    endContour();
+    lipStemp.endContour();
 
-    endShape(CLOSE);
+    lipStemp.endShape(CLOSE);
   }
+  image(lipStemp, 0, 0);
 }
 
 // 디버깅용2
