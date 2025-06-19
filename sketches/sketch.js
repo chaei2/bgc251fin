@@ -51,9 +51,17 @@ function setup() {
   textSize(8);
 }
 
+function getNormalizedDistance(a, b) {
+  let ax = map(a.x, 0, video.width, 0, width);
+  let ay = map(a.y, 0, video.height, 0, height);
+  let bx = map(b.x, 0, video.width, 0, width);
+  let by = map(b.y, 0, video.height, 0, height);
+  return dist(ax, ay, bx, by);
+}
+
 function draw() {
   background('#0000cd');
-  image(video, 0, 0, width, height);
+  // image(video, 0, 0, width, height);
 
   // lip 텍스트 적기
   textStyle(BOLDITALIC);
@@ -79,38 +87,62 @@ function draw() {
       stamps.push(new LipStamp(width, height, seqOuter, seqInner, lips));
     }
 
-    let lipsOpen = dist(
-      lips.keypoints[13].x,
-      lips.keypoints[13].y,
-      lips.keypoints[14].x,
-      lips.keypoints[14].y
-    );
-    if (lipsOpen > 15) {
-      bubbles.push(new Bubble(lips.keypoints[13].x, lips.keypoints[13].y));
+    for (let num = bubbles.length - 1; num >= 0; num--) {
+      bubbles[num].update();
+      bubbles[num].display();
+      if (bubbles[num].isDead()) {
+        bubbles.splice(num, 1);
+      }
+    }
+
+    for (let lipNum = stamps.length - 1; lipNum >= 0; lipNum--) {
+      stamps[lipNum].update();
+      stamps[lipNum].display();
+      if (stamps[lipNum].isDead()) {
+        stamps.splice(lipNum, 1);
+      }
+      let a = lips.keypoints[13];
+      let b = lips.keypoints[14];
+      let d = dist(a.x, a.y, b.x, b.y);
+      // let x = map((a.x + b.x) / 2, 0, video.width, 0, width);
+      // let y = map((a.y + b.y) / 2, 0, video.height, 0, height);
+
+      let top = lips.keypoints[13];
+      let bottom = lips.keypoints[14];
+      let left = lips.keypoints[0];
+      let right = lips.keypoints[41];
+
+      let dx = bottom.x - top.x;
+      let dy = bottom.y - top.y;
+      // console.log('left', left);
+      // console.log('right', right);
+
+      let mouthHeight = getNormalizedDistance(top, bottom);
+      let mouthWidth = getNormalizedDistance(left, right);
+
+      let ratio = mouthHeight / mouthWidth;
+
+      if (ratio > 0.23) {
+        let x = (top.x + bottom.x) / 2;
+        let y = (top.y + bottom.y) / 2;
+        bubbles.push(new Bubble(x, y));
+        console.log(
+          'mouthHeight:',
+          mouthHeight,
+          'mouthWidth:',
+          mouthWidth,
+          'ratio:',
+          ratio
+        );
+      }
     }
   }
+}
 
-  for (let num = bubbles.length - 1; num >= 0; num--) {
-    bubbles[num].update();
-    bubbles[num].display();
-    if (bubbles[num].isDead()) {
-      bubbles.splice(num, 1);
-    }
-  }
-
-  for (let lipNum = stamps.length - 1; lipNum >= 0; lipNum--) {
-    stamps[lipNum].update();
-    stamps[lipNum].display();
-    if (stamps[lipNum].isDead()) {
-      stamps.splice(lipNum, 1);
-    }
-  }
-
-  // 마지막에 와야함 윗 코드들을 다 실행 후 이미지로 되야하기 때문
-  // image(lipStamp, 0, 0);
-  if (lipStampObj) {
-    lipStampObj.display();
-  }
+// 마지막에 와야함 윗 코드들을 다 실행 후 이미지로 되야하기 때문
+// image(lipStamp, 0, 0);
+if (lipStampObj) {
+  lipStampObj.display();
 }
 
 // 디버깅용2
