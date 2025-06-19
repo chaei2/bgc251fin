@@ -30,15 +30,15 @@
 
       // ∨○○○○ [수정 필수] ○○○○∨
       // 작품 제목, 본인 성명, 작품 공개 연도
-      new P5Template.Title('내 작품 제목적기', '백채이', '2025.06.20');
+      new P5Template.Title('Bubble Kiss', '백채이', '2025.06.20');
       // 참고자료 목록
       const references = [
         {
-          title: 'What was Coding like 40 years ago?',
+          title: 'Face Mesh Detection with ml5.js',
           authors: ['Daniel Shiffman'],
-          year: '2022',
+          year: ' 2024. 11. 17',
           publisher: 'The Coding Train - YouTube',
-          url: 'https://www.youtube.com/watch?v=7r83N3c2kPw',
+          url: 'https://youtu.be/R5UZsIwPbJA?si=Rjsk6m-IMo2Dqo8x',
         },
         {
           title: '250425a',
@@ -68,7 +68,8 @@
     <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.11.8/lib/p5.js"></script> -->
     <!-- 본인 스케치 로딩 -->
-    <script src="./sketches/final.js" defer></script>
+    <script src="./sketches/sketch.js" defer></script>
+    <script src="./sketches/class.js" defer></script>
     <!-- ∧○○○○ [수정 필수] ○○○○∧ -->
   </head>
   <body>
@@ -135,11 +136,25 @@
             <!-- ∨○○○○ [수정 필수] ○○○○∨ -->
             <!-- 작품 설명 -->
             <p>
-              우리는 그 이러하다 그리고 이라고 버리다. 수 드넓을 당첨을
-              상관관계를 안 하나도, 기록한 5시 향한다. 염산의 유배지만 곡선의
-              난산을, 다녀가아서 결혼하지 한다. 뿐 보통에 음 연주자를 씨 색깔만
-              병이다 알면서, 한 하여금 움직이다. 나의 동안으로서 잃음 여보세요
-              처방은 동안 크다. 살펴보고자 우편도, 불감증을 351미터 한 잃다.
+              Bubble Kiss는 얼굴 인식을 기반으로 한 인터랙티브 제네레이티브 아트
+              작품으로 관람자의 입술 움직임과 입의 열림이라는 동적인 움직임을
+              통해 화면에 구현됩니다. 본 프로젝트는 ml5.js 라이브러리의 Face
+              Mesh Detection 기능을 활용하여 구현되었습니다. 사용자가 입술을
+              움직이면 입술 스탬프가 찍히며, 입을 벌리면 입술 중심으로 버블들이
+              떠오릅니다. 이 두 요소들은 약간의 시간이 지나면 사라지는 구조를
+              가지고 있으며, 이는 마치 시간에 흐름에 따라 여운을 남기듯 서서히
+              사라지는 듯한 인상을 전달합니다. 버블 파티클은 부드러운 곡선을
+              그리며 위로 상승하고, 점점 투명해지며 소멸하는 구조를 가지고
+              있습니다.
+            </p>
+            <p>
+              이러한 방식은 말을 하지 않아도 전달되는 감정, 즉 비언어적 소통의
+              시각화를 목표로 합니다. 버블은 어릴적 하던 놀이, 비눗방울을
+              표현하였고, 입술 도장은 표현의 순간적인 흔적을 나타냅니다.
+              사용자는 입술을 통해 자신만의 움직임을 화면에 남기고, 흔적이
+              서서히 사라지는 과정을 보며 일시적인 여운을 체험하게 됩니다.
+              이로써 Bubble Kiss는 사람의 동작 하나 하나가 이 작품을
+              완성시킵니다.
             </p>
             <!-- ∧○○○○ [수정 필수] ○○○○∧ -->
           </div>

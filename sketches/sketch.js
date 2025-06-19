@@ -9,10 +9,10 @@ const option = {
 };
 let faces = [];
 let video;
-let lipStemp;
-let stemps = [];
+let lipStamp;
+let bubbles = [];
+let stamps = [];
 
-// class stemps =
 let seqOuter = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,
 ];
@@ -32,8 +32,8 @@ function setup() {
   // 캔버스 바꿔줘야함
   new Responsive().createResponsiveCanvas(1440, 1080, 'contain', true);
 
-  lipStemp = createGraphics(width, height);
-  lipStemp.clear();
+  lipStamp = createGraphics(width, height);
+  lipStamp.clear();
   // "contain" | "fill" | "cover" | "none" | "scale-down"
 
   // 비디오
@@ -58,44 +58,62 @@ function draw() {
   fill('white');
   text('Lips', width / 2, height / 7);
 
-  lipStemp.fill('#b22222a9');
-  lipStemp.noStroke();
+  lipStamp.fill('#b22222a9');
+  lipStamp.noStroke();
   // lipStemp.rect(0, 0, width, height);
 
   // 그리드
   // Responsive.drawReferenceGrid('#ffffff');
 
-  // 디버깅용
-  // noStroke();
-  // fill('red');
-  // circle(mouseX, mouseY, 100);
-
-  for (let i = 0; i < faces.length; i++) {
-    let face = faces[i];
+  for (let cnt = 0; cnt < faces.length; cnt++) {
+    let face = faces[cnt];
     let lips = face.lips;
-    lipStemp.fill('#b22222a9');
-    lipStemp.strokeWeight(1);
-    lipStemp.noStroke();
-    lipStemp.beginShape();
+
+    let lipsOpen = dist(
+      lips.keypoints[13].x,
+      lips.keypoints[13].y,
+      lips.keypoints[14].x,
+      lips.keypoints[14].y
+    );
+    if (lipsOpen > 15) {
+      bubbles.push(new Bubble(lips.keypoints[13].x, lips.keypoints[13].y));
+    }
+
+    lipStamp.fill('#b22222a9');
+    lipStamp.strokeWeight(1);
+    lipStamp.noStroke();
+    lipStamp.beginShape();
     for (let n = 0; n < seqOuter.length; n++) {
       let kpIdx = seqOuter[n];
       let keypoint = lips.keypoints[kpIdx];
-      lipStemp.vertex(keypoint.x, keypoint.y);
+      lipStamp.vertex(keypoint.x, keypoint.y);
     }
 
     // endShape(CLOSE);
     // 반시계
-    lipStemp.beginContour();
+    lipStamp.beginContour();
     for (let num = seqInner.length - 1; num >= 0; num--) {
       let kpIdx = seqInner[num];
       let keypoint = lips.keypoints[kpIdx];
-      lipStemp.vertex(keypoint.x, keypoint.y);
+      lipStamp.vertex(keypoint.x, keypoint.y);
     }
-    lipStemp.endContour();
+    lipStamp.endContour();
 
-    lipStemp.endShape(CLOSE);
+    lipStamp.endShape(CLOSE);
   }
-  image(lipStemp, 0, 0);
+
+  // 버블
+
+  for (let num = bubbles.length - 1; num >= 0; num--) {
+    bubbles[num].update();
+    bubbles[num].display();
+    if (bubbles[num].isDead()) {
+      bubbles.splice(num, 1);
+    }
+  }
+
+  // 마지막에 와야함 윗 코드들을 다 실행 후 이미지로 되야하기 때문
+  image(lipStamp, 0, 0);
 }
 
 // 디버깅용2
