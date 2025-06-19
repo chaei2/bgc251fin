@@ -14,6 +14,8 @@ let lipStampObj;
 let bubbles = [];
 let stamps = [];
 
+let frameCounter = 0;
+
 let seqOuter = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,
 ];
@@ -45,8 +47,6 @@ function setup() {
   // Start detecting faces from the webcam video
   faceMesh.detectStart(video, gotFaces);
 
-  lipStampObj = new LipStamp(width, height, seqOuter, seqInner);
-
   // 입술 번호 출력
   textSize(8);
 }
@@ -62,10 +62,7 @@ function draw() {
   fill('white');
   text('Lips', width / 2, height / 7);
 
-  lipStamp.fill('#b22222a9');
-  lipStamp.noStroke();
-  // lipStemp.rect(0, 0, width, height);
-
+  frameCounter++;
   // 그리드
   // Responsive.drawReferenceGrid('#ffffff');
 
@@ -73,7 +70,16 @@ function draw() {
   for (let cnt = 0; cnt < faces.length; cnt++) {
     let face = faces[cnt];
     let lips = face.lips;
-    lipStampObj.drawStamp(lips);
+
+    if (lips) {
+      lipStampObj = new LipStamp(width, height, seqOuter, seqInner, lips);
+    }
+
+    // if (frameRate % 5 === 0) {
+    // }
+    if (frameCounter % 10 === 0) {
+      stamps.push(new LipStamp(width, height, seqOuter, seqInner, lips));
+    }
 
     let lipsOpen = dist(
       lips.keypoints[13].x,
@@ -94,9 +100,19 @@ function draw() {
     }
   }
 
+  for (let lipNum = stamps.length - 1; lipNum >= 0; lipNum--) {
+    stamps[lipNum].update();
+    stamps[lipNum].display();
+    if (stamps[lipNum].isDead()) {
+      stamps.splice(lipNum, 1);
+    }
+  }
+
   // 마지막에 와야함 윗 코드들을 다 실행 후 이미지로 되야하기 때문
   // image(lipStamp, 0, 0);
-  lipStampObj.show();
+  if (lipStampObj) {
+    lipStampObj.display();
+  }
 }
 
 // 디버깅용2
