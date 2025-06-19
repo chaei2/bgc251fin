@@ -51,7 +51,7 @@ function setup() {
   faceMesh.detectStart(video, gotFaces);
 
   // 입술 번호 출력
-  textSize(8);
+  // textSize(8);
 }
 
 //  getNormalizedDistance()유사성
@@ -162,25 +162,25 @@ if (lipStampObj) {
 }
 
 // 디버깅용2
-function keyPressed() {
-  if (key === 'a') {
-    for (let i = 0; i < faces.length; i++) {
-      // 얼굴 인식 확인
-      let face = faces[i];
-      console.log(i, face);
+// function keyPressed() {
+//   if (key === 'a') {
+//     for (let i = 0; i < faces.length; i++) {
+//       // 얼굴 인식 확인
+//       let face = faces[i];
+//       console.log(i, face);
 
-      // lips 인식 확인
-      let lips = face.lips;
-      console.log(i, lips);
+//       // lips 인식 확인
+//       let lips = face.lips;
+//       console.log(i, lips);
 
-      // 키 포인트 배열 구조 확인
-      for (let kpIdx = 0; kpIdx < lips.keypoints.length; kpIdx++) {
-        let keypoint = lips.keypoints[kpIdx];
-        console.log(kpIdx, keypoint);
-      }
-    }
-  }
-}
+//       // 키 포인트 배열 구조 확인
+//       for (let kpIdx = 0; kpIdx < lips.keypoints.length; kpIdx++) {
+//         let keypoint = lips.keypoints[kpIdx];
+//         console.log(kpIdx, keypoint);
+//       }
+//     }
+//   }
+// }
 
 function gotFaces(results) {
   // Save the output to the faces variable
