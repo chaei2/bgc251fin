@@ -16,19 +16,39 @@ class LipStamp {
     this.lipLayer.noStroke();
     this.lipLayer.beginShape();
 
+    let cX = 0;
+    let cY = 0;
+
+    // 중심점 좌표 계산
+    for (let idx = 0; idx < this.seqOuter.length; idx++) {
+      let kp = lips.keypoints[this.seqOuter[idx]];
+      cX += kp.x;
+      cY += kp.y;
+    }
+
+    cX /= this.seqOuter.length;
+    cY /= this.seqOuter.length;
+
+    let scaleLips = 2.5;
+
     // 입술 바깥쪽 그림
     for (let n = 0; n < this.seqOuter.length; n++) {
       let kpIdx = this.seqOuter[n];
-      let keypoint = lips.keypoints[kpIdx];
-      this.lipLayer.vertex(keypoint.x, keypoint.y);
+      let kp = lips.keypoints[kpIdx];
+      let x = (kp.x - cX) * scaleLips + cX;
+      let y = (kp.y - cY) * scaleLips + cY;
+
+      this.lipLayer.vertex(x, y);
     }
 
     this.lipLayer.beginContour();
     // 입술 안쪽 그림과 동시에 역으로 부름
     for (let num = this.seqInner.length - 1; num >= 0; num--) {
       let kpIdx = this.seqInner[num];
-      let keypoint = lips.keypoints[kpIdx];
-      this.lipLayer.vertex(keypoint.x, keypoint.y);
+      let kp = lips.keypoints[kpIdx];
+      let x = (kp.x - cX) * scaleLips + cX;
+      let y = (kp.y - cY) * scaleLips + cY;
+      this.lipLayer.vertex(x, y);
     }
 
     this.lipLayer.endContour();

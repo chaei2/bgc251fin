@@ -2,9 +2,9 @@
 class Bubble {
   constructor(x, y) {
     this.p = createVector(x, y);
-    this.alpha = 200;
+    this.alpha = 180;
     this.v = createVector(random(-0.5, 0.5), random(-1, -4));
-    this.size = random(10, 40);
+    this.size = random(30, 100);
   }
 
   update() {
@@ -13,7 +13,7 @@ class Bubble {
   }
   display() {
     noStroke();
-    fill(255, 255, 255, this.alpha);
+    fill(200, random(100, 255), random(100, 255), this.alpha);
     ellipse(this.p.x, this.p.y, this.size);
   }
   isDead() {

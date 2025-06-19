@@ -51,6 +51,7 @@ function setup() {
   textSize(8);
 }
 
+//  getNormalizedDistance()유사성
 function getNormalizedDistance(a, b) {
   let ax = map(a.x, 0, video.width, 0, width);
   let ay = map(a.y, 0, video.height, 0, height);
@@ -65,10 +66,16 @@ function draw() {
 
   // lip 텍스트 적기
   textStyle(BOLDITALIC);
-  textSize(70);
+  textSize(60);
   textAlign(CENTER);
   fill('white');
-  text('Lips', width / 2, height / 7);
+  text('Lips & Bubbles', width / 2, height / 7);
+
+  textStyle(ITALIC);
+  textSize(20);
+  textAlign(CENTER);
+  fill('yellow');
+  text('Please turn your head to the left and right', width / 2, height / 5.7);
 
   frameCounter++;
   // 그리드
@@ -87,19 +94,18 @@ function draw() {
       stamps.push(new LipStamp(width, height, seqOuter, seqInner, lips));
     }
 
-    for (let num = bubbles.length - 1; num >= 0; num--) {
-      bubbles[num].update();
-      bubbles[num].display();
-      if (bubbles[num].isDead()) {
-        bubbles.splice(num, 1);
-      }
-    }
-
     for (let lipNum = stamps.length - 1; lipNum >= 0; lipNum--) {
       stamps[lipNum].update();
       stamps[lipNum].display();
       if (stamps[lipNum].isDead()) {
         stamps.splice(lipNum, 1);
+      }
+      for (let num = bubbles.length - 1; num >= 0; num--) {
+        bubbles[num].update();
+        bubbles[num].display();
+        if (bubbles[num].isDead()) {
+          bubbles.splice(num, 1);
+        }
       }
       let a = lips.keypoints[13];
       let b = lips.keypoints[14];
@@ -122,23 +128,29 @@ function draw() {
 
       let ratio = mouthHeight / mouthWidth;
 
-      if (ratio > 0.23) {
+      if (ratio > 0.23 && frameCounter % 6 === 0) {
+        textStyle(BOLDITALIC);
+        textSize(100);
+        textAlign(CENTER);
+        fill(random(100, 255), random(100, 255), random(100, 255));
+        text('Bubble!', width / 2, height / 3);
         let x = (top.x + bottom.x) / 2;
         let y = (top.y + bottom.y) / 2;
         bubbles.push(new Bubble(x, y));
-        console.log(
-          'mouthHeight:',
-          mouthHeight,
-          'mouthWidth:',
-          mouthWidth,
-          'ratio:',
-          ratio
-        );
+
+        // 디버깅용
+        // console.log(
+        //   'mouthHeight:',
+        //   mouthHeight,
+        //   'mouthWidth:',
+        //   mouthWidth,
+        //   'ratio:',
+        //   ratio
+        // );
       }
     }
   }
 }
-
 // 마지막에 와야함 윗 코드들을 다 실행 후 이미지로 되야하기 때문
 // image(lipStamp, 0, 0);
 if (lipStampObj) {
