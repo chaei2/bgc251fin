@@ -75,8 +75,6 @@ function draw() {
       lipStampObj = new LipStamp(width, height, seqOuter, seqInner, lips);
     }
 
-    // if (frameRate % 5 === 0) {
-    // }
     if (frameCounter % 10 === 0) {
       stamps.push(new LipStamp(width, height, seqOuter, seqInner, lips));
     }
