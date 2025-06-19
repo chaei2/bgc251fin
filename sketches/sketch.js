@@ -7,6 +7,9 @@ const option = {
   refineLandmarks: false,
   flipHorizontal: true,
 };
+
+let currentBg = '#0000cd';
+
 let faces = [];
 let video;
 let lipStamp;
@@ -61,7 +64,7 @@ function getNormalizedDistance(a, b) {
 }
 
 function draw() {
-  background('#0000cd');
+  background(currentBg);
   // image(video, 0, 0, width, height);
 
   // lip 텍스트 적기
@@ -129,10 +132,11 @@ function draw() {
       let ratio = mouthHeight / mouthWidth;
 
       if (ratio > 0.23 && frameCounter % 6 === 0) {
+        currentBg = color(random(60, 100), random(60, 200), random(100, 255));
         textStyle(BOLDITALIC);
         textSize(100);
         textAlign(CENTER);
-        fill(random(100, 255), random(100, 255), random(100, 255));
+        fill(random(150, 255), random(150, 255), random(150, 255));
         text('Bubble!', width / 2, height / 3);
         let x = (top.x + bottom.x) / 2;
         let y = (top.y + bottom.y) / 2;
@@ -150,6 +154,7 @@ function draw() {
       }
     }
   }
+  // currentBg = '#0000cd';
 }
 // 마지막에 와야함 윗 코드들을 다 실행 후 이미지로 되야하기 때문
 // image(lipStamp, 0, 0);
