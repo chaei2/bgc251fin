@@ -1,3 +1,4 @@
+// 버블 생성, 업뎃, 화면에 뜨고, 죽기
 class Bubble {
   constructor(x, y) {
     this.p = createVector(x, y);

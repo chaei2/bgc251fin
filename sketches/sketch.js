@@ -10,6 +10,7 @@ const option = {
 let faces = [];
 let video;
 let lipStamp;
+let lipStampObj;
 let bubbles = [];
 let stamps = [];
 
@@ -44,6 +45,8 @@ function setup() {
   // Start detecting faces from the webcam video
   faceMesh.detectStart(video, gotFaces);
 
+  lipStampObj = new LipStamp(width, height, seqOuter, seqInner);
+
   // 입술 번호 출력
   textSize(8);
 }
@@ -52,6 +55,7 @@ function draw() {
   background('#0000cd');
   image(video, 0, 0, width, height);
 
+  // lip 텍스트 적기
   textStyle(BOLDITALIC);
   textSize(70);
   textAlign(CENTER);
@@ -65,9 +69,11 @@ function draw() {
   // 그리드
   // Responsive.drawReferenceGrid('#ffffff');
 
+  // 버블
   for (let cnt = 0; cnt < faces.length; cnt++) {
     let face = faces[cnt];
     let lips = face.lips;
+    lipStampObj.drawStamp(lips);
 
     let lipsOpen = dist(
       lips.keypoints[13].x,
@@ -78,31 +84,7 @@ function draw() {
     if (lipsOpen > 15) {
       bubbles.push(new Bubble(lips.keypoints[13].x, lips.keypoints[13].y));
     }
-
-    lipStamp.fill('#b22222a9');
-    lipStamp.strokeWeight(1);
-    lipStamp.noStroke();
-    lipStamp.beginShape();
-    for (let n = 0; n < seqOuter.length; n++) {
-      let kpIdx = seqOuter[n];
-      let keypoint = lips.keypoints[kpIdx];
-      lipStamp.vertex(keypoint.x, keypoint.y);
-    }
-
-    // endShape(CLOSE);
-    // 반시계
-    lipStamp.beginContour();
-    for (let num = seqInner.length - 1; num >= 0; num--) {
-      let kpIdx = seqInner[num];
-      let keypoint = lips.keypoints[kpIdx];
-      lipStamp.vertex(keypoint.x, keypoint.y);
-    }
-    lipStamp.endContour();
-
-    lipStamp.endShape(CLOSE);
   }
-
-  // 버블
 
   for (let num = bubbles.length - 1; num >= 0; num--) {
     bubbles[num].update();
@@ -113,7 +95,8 @@ function draw() {
   }
 
   // 마지막에 와야함 윗 코드들을 다 실행 후 이미지로 되야하기 때문
-  image(lipStamp, 0, 0);
+  // image(lipStamp, 0, 0);
+  lipStampObj.show();
 }
 
 // 디버깅용2
