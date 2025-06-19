@@ -54,7 +54,7 @@ function setup() {
   // textSize(8);
 }
 
-//  getNormalizedDistance()유사성
+//  getNormalizedDistance()절대좌표 거리 구하는 함수
 function getNormalizedDistance(a, b) {
   let ax = map(a.x, 0, video.width, 0, width);
   let ay = map(a.y, 0, video.height, 0, height);
@@ -121,8 +121,8 @@ function draw() {
       let left = lips.keypoints[0];
       let right = lips.keypoints[41];
 
-      let dx = bottom.x - top.x;
-      let dy = bottom.y - top.y;
+      // let dx = bottom.x - top.x;
+      // let dy = bottom.y - top.y;
       // console.log('left', left);
       // console.log('right', right);
 
