@@ -154,7 +154,6 @@ function draw() {
       }
     }
   }
-  // currentBg = '#0000cd';
 }
 // 마지막에 와야함 윗 코드들을 다 실행 후 이미지로 되야하기 때문
 // image(lipStamp, 0, 0);
