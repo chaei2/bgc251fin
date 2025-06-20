@@ -83,8 +83,7 @@ function draw() {
   frameCounter++;
   // 그리드
   // Responsive.drawReferenceGrid('#ffffff');
-
-  // 버블
+  // 얼굴
   for (let cnt = 0; cnt < faces.length; cnt++) {
     let face = faces[cnt];
     let lips = face.lips;
@@ -97,12 +96,15 @@ function draw() {
       stamps.push(new LipStamp(width, height, seqOuter, seqInner, lips));
     }
 
+    // 스탬프
     for (let lipNum = stamps.length - 1; lipNum >= 0; lipNum--) {
       stamps[lipNum].update();
       stamps[lipNum].display();
       if (stamps[lipNum].isDead()) {
         stamps.splice(lipNum, 1);
       }
+
+      // 버블
       for (let num = bubbles.length - 1; num >= 0; num--) {
         bubbles[num].update();
         bubbles[num].display();
@@ -110,6 +112,7 @@ function draw() {
           bubbles.splice(num, 1);
         }
       }
+
       let a = lips.keypoints[13];
       let b = lips.keypoints[14];
       let d = dist(a.x, a.y, b.x, b.y);
